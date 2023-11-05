@@ -53,7 +53,45 @@ The newly designed sate machine should be something like this:
 
 ```python
 
-
-
+for t in range(4):
+	if t==0: ## t = 0
+		w_i = 0
+		for neuron_i in range(40): ## for each neuron
+			load_voltage(0) ## load the raw voltage with arithm = 0
+			N = load_offset() ## check how many computations it needs
+			for i in range(w_i, w_i+N+1, 1):
+				index, w = load_weight(i)
+				act = load_act(index)
+				compute(act, w)
+			output_spk_dump_voltage()
+			w_i += N
+	else:
+		for neuron_i in range(40):
+			load_voltage(1) ## load the processed voltage with arithm = 1 
+			compute(pre_vol, vol_diff)
+			output_spk_dump_voltage()
 
 ```
+
+## 4 Nov
+
+The newly designed state machine chart should probably look like this:
+
+![New controller state machine](img/newly_designed_controller_statemachine_FSM_chart.jpeg)
+
+The blue part belongs to the old controller state machine, the crimson part is the extra logic I need to add to the state machine.
+
+The only extra port I need to add is simply just the arithm port to the neuron.
+
+Finished the main design and did the simulation. 
+
+So far the functionality looks alright, but the computation looks wrong.
+
+Will verify this tomorrow.
+
+
+## 5 Nov
+
+
+
+
