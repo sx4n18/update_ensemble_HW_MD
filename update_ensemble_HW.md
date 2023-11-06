@@ -90,8 +90,39 @@ So far the functionality looks alright, but the computation looks wrong.
 Will verify this tomorrow.
 
 
-## 5 Nov
+## 6 Nov
+
+Since the state machine has already been setup, I will check the behaviour now.
+
+I will first check the simulation of the old version of the simulation and see the activation for this specific sample.
+
+Just reran the simulation and collected the key data from the simulation, will compare them against the new simulation.
+
+It turns out that I forgot to declare the weight_out_mem as an 8-bit wire so that it was treated as a 1 bit wire.
+
+After fixing this bug, this layer is now giving correct spike AER.
 
 
+I should check how fast could the second stage be in terms of the spike so that the following layer could catch up.
+
+This would only leave the second layer 6 clock cycles to deal with the spike.
+
+Example simulation shows that it needs:
+
+37, cycles 31 cycles.
+
+These two numbers correspond to the processing unit of 6 and 5.
+
+The clock cycles it needs is 6\*n+2 (one extra cycle for the complete display of the valid signal)
+
+But this would totally depends on how many neurons this spike will trigger.
+
+Normally one spike will trigger 0.3\*18 neurons that is 5.4 neurons.
+
+What I could do probably is to check the distribution of the numbers of neurons triggered by spikes for each spike from the hidden layer.
+
+After checking on the distribution of the count of each possible bin, it could be seen that the possible connection ranges from 1 to 12, so I should at least leave 12 connections for the possible computation.
+
+that is at least 12\*6 +2 = 74 cycles.
 
 
