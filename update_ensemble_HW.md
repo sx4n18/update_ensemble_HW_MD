@@ -126,3 +126,108 @@ After checking on the distribution of the count of each possible bin, it could b
 that is at least 12\*6 +2 = 74 cycles.
 
 
+## 8 Nov
+
+Will now change the design in the controller state machine to delay each cycle by 70 cycles since the spike generation would take at least 6 cycles if memory serves.
+
+6 cycles confirmed for the spike generation process.
+Now thinking which state I should extend for this.
+
+Found that tidy_up state does nothing.
+
+Just extended the tidy_up state if time_step_cnt != 0 for 70 cycles;
+
+I has now been verified that cloeset spikes between each other would be 750 ns.
+
+This should be enough for the second layer in the worst case.
+
+#### updated spike generation simulation
+
+Will now hook up the INF layer and verify the computation.
+
+I see that I have been switching weight memory address like this:
+
+0 -> neuron_index -> 0 -> neuron_index -> neuron_index+1 -> 0
+
+wonder if this is necessary.
+
+Will now simulate at the top level of the updated spike generation module,
+
+Simulation on the spike generation module looks ok so far, will not hook up the next layer to see if the simulation shows what I want.
+
+#### spike_gen +INF layer simulation
+
+Think it works with the second layer hooked and giving the correct inference of 13.
+
+#### updated bin_ratio_net simulation
+
+Now I am moving one layer above and build the whole net with pre-processing included.
+
+Testing the net with real input values.
+
+I see that diagonal 15 is giving me wrong results, but diagonal 0 works just fine.
+
+#### ensemble net simulation
+
+I will now move one level above again and simulate at the ensemble level.
+
+Seems that a lot of nets are giving me 0 not sure what is happening with the ensemble, but I will check what is happening here.
+
+Will now switch back the old spike generation top and see the results.
+
+I realised that I have not parametraised the sub module in the updated spike_generation_top module.
+
+Yes, after fixing this, the simulation on the bin_ratio_net_top_tb works when diagonal is set to 15.
+
+Will check again on the bin_ratio_ensemble_top_tb.
+
+Yes, this has fixed the issue with the ensemble net.
+
+This proves to be working and requires even less time (just around 1/3 of the original latency)
+
+And from simulation, it shows that the latency is just 333.185 us.
+
+#### FPGA validation
+
+I will leave this part to a later stage, but so far it looks promising.
+
+
+#### Power analysis
+
+Just reran the post-implementation simulation and found the results correct.
+
+Now inserting the saif file into the analysis and see the power consumption.
+
+I did drop the power consumption: 310 + 910 mW
+
+Here is the new power breakdown:
+
+![updated power consumption breakdown](./img/updated_power_breakdown_with_newly_designed_structure.png)
+
+The resource breakdown is here:
+![updated resources utilisation](./img/updated_design_post_imp_resource_utilisation_9_Nov.png)
+
+Even though the spike generation is still the most power consuming part in the hierarchy, but it has dropped at least 2 mW each net. 
+
+Now the biggest net will consume 18 mW.
+
+Another thing that needs attention is there is a concerning warning about my design.
+
+```text
+[Synth 8-7137] Register voltage_diff_reg in module acc_encapsule_IF has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  ["/home/sx4n18/ensemble_spiking/Ensemble_SNN_updated/HW/acc_IF_neuron.sv":42]
+```
+
+I should probably rewrite the code and do the simulation and synthesis again.
+
+
+## 9 Nov
+
+I will log down the artix board I used previously for the "just-exact-amount-of-resources" implementation.
+
+The part number is xc7a100tcsg324-3
+
+I noticed that request_this_dia bus are not all connected during post-imp simulation, and it seems some diagonals were ommitted during synthesis.
+
+Probably because it does not change the whole logic even removed.
+
+
