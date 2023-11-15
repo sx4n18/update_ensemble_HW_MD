@@ -228,6 +228,21 @@ The part number is xc7a100tcsg324-3
 
 I noticed that request_this_dia bus are not all connected during post-imp simulation, and it seems some diagonals were ommitted during synthesis.
 
-Probably because it does not change the whole logic even removed.
+Probably because it does not change the whole logic even when removed.
+
+
+## 15 Nov
+
+Back from the trip, now I am feeling more charged with ideas and confidence to finish my PhD.
+
+To save power from the state machine, I will optimise the system from just point of view of a single bin_ratio_net.
+
+Think most of the power consumption comes from the internal register (counter) flipping.
+
+This is not something I could probably optimise, but I could try to find the best combo of bin-ratio-net with probably just 5 nets.
+
+This should be enough.
+
+But I fixed one synthesis warning about the register voltage_diff.
 
 
