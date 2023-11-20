@@ -246,3 +246,73 @@ This should be enough.
 But I fixed one synthesis warning about the register voltage_diff.
 
 
+## 20 Nov
+
+Now rerun the implementation and run the syntehsis to get the updated figures again.
+
+The newest figure of the power consumption has been decreased to 
+
+305 mW + 910 mW 
+
+![the newest power report from the newest design](./img/power_report_summary_20_Nov.png)
+
+The power hierarchy:
+
+![The power hierarchy of the design](./img/power_hierarchy_of_the_design_20_Nov.png)
+
+I could now recalculate the key figures in the paper.
+
+The updated design has the following resource usage:
+
+| Resource    | utilisation | Available | util % |
+| ----------- | ----------- | --------- | ------ |
+| LUT         | 61822       | 537600    | 11.5   |
+| LUTRAM      | 1050        | 76800     | 1.37   |
+| FF          | 9841        | 1075200   | 0.92   |
+| BRAM        | 10          | 1728      | 0.58   |
+
+The latency is 334 us or 0.334 ms, this gives the throughput of 2.994e3 if/s
+
+If we use the same assumption with 12% of the static power.
+
+The estimated total power is:
+
+305 mW + 110 mW = 415 mW
+
+The new power efficiency is:
+
+$$\frac{2.994\times 10^{3}}{415} = 7.214 if/(s\dot mW)$$
+
+each inferenrece will do operations:
+
+first layer:
+
+first time step:
+$$(1023 + 1022 + 1021+.....+1004)\times 40\times 0.3 = 243240$$
+
+next 3 steps:
+$$40 \times 3 = 120$$
+
+subtotal:
+
+$$243240 + 120 = 243360$$
+
+second layer:
+(according to the previous estimation)
+
+$4090\times 4 = 16360$ 
+
+Two layers in total:
+
+$$243360 + 16360 = 259720$$
+
+This gives the operations per second:
+
+$$259720 \div (334 \times 10^{-6}) = 7.78\times 10^{8} OP/s$$
+
+or 778 MOP/s
+
+energy efficiency with operation is:
+
+$$778 \div 415 = 1.87 MOP/(s \dot mW)$$
+
