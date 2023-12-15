@@ -281,16 +281,20 @@ The estimated total power is:
 
 The new power efficiency is:
 
-$$\frac{2.994\times 10^{3}}{415} = 7.214 if/(s\dot mW)$$
+$$\frac{2.994\times 10^{3}}{415} = 7.214 if/(s \cdot mW)$$
+
+Each inference burns 139 $\mu J$
 
 each inferenrece will do operations:
 
 first layer:
 
 first time step:
+
 $$(1023 + 1022 + 1021+.....+1004)\times 40\times 0.3 = 243240$$
 
 next 3 steps:
+
 $$40 \times 3 = 120$$
 
 subtotal:
@@ -300,7 +304,7 @@ $$243240 + 120 = 243360$$
 second layer:
 (according to the previous estimation)
 
-$4090\times 4 = 16360$ 
+$$4090\times 4 = 16360$$ 
 
 Two layers in total:
 
@@ -314,5 +318,5 @@ or 778 MOP/s
 
 energy efficiency with operation is:
 
-$$778 \div 415 = 1.87 MOP/(s \dot mW)$$
+$$778 \div 415 = 1.87 MOP/(s \cdot mW)$$
 
