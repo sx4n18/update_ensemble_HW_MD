@@ -320,3 +320,142 @@ energy efficiency with operation is:
 
 $$778 \div 415 = 1.87 MOP/(s \cdot mW)$$
 
+
+## 15 Dec
+
+Have been thinking about the last trimming optimisation.
+
+I could probably use bayesian optimisation to get a general trend first and then decide exactly how many nets I need.
+
+And then do an exhaustive search on the net combination to get the highest accuracy.
+
+Now learning how to use bayesian optimisation.
+
+I keep forgeting my last script to validate the converted SNN.
+
+It should be on branch **rey**, and the script is: TF_imp_rey/LSQ_training_on_pruned_ensemble.py.
+
+Just turn the option **Training_from_scratch** off and it will start to read the weight and get to the validation stage.
+
+I should probably draft a new script specifically for my Bayesian optimisation.
+
+
+## 25 Dec
+
+I asked ChatGPT to generate code for me to pick 5 nets out of 20 using bayesian optimisation.
+
+After some iteration, here is the python code:
+
+```python
+
+import numpy as np
+from sklearn.metrics import accuracy_score
+from skopt import gp_minimize
+
+# Assuming you have inference results from 20 nets (replace this with your actual data)
+# shape: (1350, 20, 18)
+inference_results = np.random.rand(1350, 20, 18)
+
+# Corresponding labels (replace this with your actual labels)
+labels = np.random.randint(0, 18, size=(1350,))
+
+# Define the objective function to maximize accuracy
+def objective(indices):
+    # Ensure exactly 5 nets are selected
+    if np.sum(indices) != 5:
+        return 0.0  # Penalize configurations that don't satisfy the constraint
+    
+    ensemble_predictions = np.mean(inference_results[:, indices, :], axis=1)
+    ensemble_predictions = np.argmax(ensemble_predictions, axis=1)
+    
+    accuracy = accuracy_score(labels, ensemble_predictions)
+    
+    return -accuracy  # Minimize, so negate the accuracy
+
+# Define the search space to select exactly 5 nets out of 20
+space = [(0, 1) for _ in range(20)]
+
+# Gaussian process-based Bayesian optimization without explicit constraints
+result = gp_minimize(
+    objective,
+    space,
+    n_calls=100,
+    n_random_starts=10,
+    acq_func='EI',
+    random_state=42,
+)
+
+# Extract the best combination of indices
+best_indices = np.round(result.x)
+selected_indices = [i for i, val in enumerate(best_indices) if val == 1]
+
+print("Best combination of indices:", selected_indices)
+
+```
+
+Since gp_minimise is trying to minimise the objective, I asked gpt to rewrite the objective function so that it will minimise the cross entropy between label and prediction.
+
+```python
+import numpy as np
+from sklearn.metrics import log_loss
+from skopt import gp_minimize
+
+# Assuming you have inference results from 20 nets (replace this with your actual data)
+# shape: (1350, 20, 18)
+inference_results = np.random.rand(1350, 20, 18)
+
+# Corresponding labels (replace this with your actual labels)
+labels = np.random.randint(0, 18, size=(1350,))
+
+# Define the objective function to minimize cross-entropy
+def objective(indices):
+    # Ensure exactly 5 nets are selected
+    if np.sum(indices) != 5:
+        return 10.0  # Penalize configurations that don't satisfy the constraint
+    
+    ensemble_predictions = np.mean(inference_results[:, indices, :], axis=1)
+    ensemble_predictions = np.argmax(ensemble_predictions, axis=1)
+    
+    ce = log_loss(labels, ensemble_predictions, labels=np.arange(18))
+    
+    return ce  # Minimize cross-entropy
+
+# Define the search space to select exactly 5 nets out of 20
+space = [(0, 1) for _ in range(20)]
+
+# Gaussian process-based Bayesian optimization without explicit constraints
+result = gp_minimize(
+    objective,
+    space,
+    n_calls=100,
+    n_random_starts=10,
+    acq_func='EI',
+    random_state=42,
+)
+
+# Extract the best combination of indices
+best_indices = np.round(result.x)
+selected_indices = [i for i, val in enumerate(best_indices) if val == 1]
+
+print("Best combination of indices:", selected_indices)
+```
+Found that my code has commented off the line that saves the testing results and hard_voting results, will temporarily turn this back on and save the results somewhere.
+
+Also I realised that exhaustive search for the combination of 5 out of 20 is not too expensive.
+
+only 15,504 combinations, totally searchable
+
+The exhaustive search gives me the accuracy of 96.74%, which is not bad.
+
+```text
+The best accuracy is  0.9674074074074074
+The best index is  5932
+The best combination is  (1, 5, 16, 17, 19)
+```
+
+## 3 Jan
+
+Following the test, I will now update the hardware design and do another power measurement.
+
+
+
