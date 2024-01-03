@@ -458,4 +458,121 @@ The best combination is  (1, 5, 16, 17, 19)
 Following the test, I will now update the hardware design and do another power measurement.
 
 
+Since I now have the best combo of 5 (1,5,16,17,19), I will now update the hardware design to just have these 5 nets.
+
+
+I realised that I have a lot of different projects in my laptop.
+
+The newest and updated one is in the folder 
+
+```
+~/ensemble_spiking/Ensemble_SNN_updated_vivado_sim/ensemble_SNN_update
+
+```
+
+Will now add another top module and rerun the implementation to get a new updated power measurement.
+
+
+Have just modified the very top module namely Trimmed_bin_ratio_ensemble_spiking_net
+
+With each net mannually instantiated.
+
+```text
+"[Synth 8-3848] Net final_judgement in module/entity Trimmed_bin_ratio_ensemble_spiking_net does not have driver. ["/home/sx4n18/ensemble_spiking/Ensemble_SNN_updated/HW/Trimmed_bin_ratio_ensemble_spiking_net.v":37]
+"
+```
+
+Found this message, and then I realised that I did not connect the infer_ready_this_dia signal to the register for saving.
+
+
+I will do a simulation now before running synthesis.
+
+Remember that the settings needed to generate the saif file:
+
+![Simulation settings for SAIF file generation](./img/settings_for_SAIF_file_generation_3_Jan.png)
+
+The simulation shows that the 5 nets' design is functional and working:
+
+![Functional 5 nets design](./img/Good_performance_shown_from_simulation_waveform_3_Jan.png)
+
+
+
+
+New trimmed design utilisation:
+
+The updated design has the following resource usage:
+
+| Resource    | utilisation | Available | util % |
+| ----------- | ----------- | --------- | ------ |
+| LUT         | 15337       | 537600    | 2.85   |
+| LUTRAM      | 260         | 76800     | 0.34   |
+| FF          | 2543        | 1075200   | 0.24   |
+| BRAM        | 2.5         | 1728      | 0.14   |
+
+There is a significant resource saving from previous design. with now under 3% resource usage.
+
+Will now run the simulation and generate the SAIF file for power analysis.
+
+Latency did not change for this design, which is still 334 us or 0.334ms, that is 2.994e3 if/s.
+
+
+The new power breakdown for the trimmed design is:
+
+
+![New power breakdown for trimmed design](./img/New_power_breakdown_for_trimmed_nets_3_Jan.png)
+
+It could be seen that dynamic power only costs 75 mW and the static power is still really high at around 907 mW
+
+If we use the same assumption with 4% of the static power.
+
+The estimated total power is:
+
+75 mW + 36 mW = 111 mW
+
+The new power efficiency is:
+
+$$\frac{2.994\times 10^{3}}{111} = 26.973 if/(s \cdot mW)$$
+
+Each inference burns 37.1 $\mu J$
+
+Since we only have nets 1, 5, 16, 17, 19
+
+each inferenrece will do operations:
+
+first layer:
+
+first time step:
+
+$$(1022 + 1018 + 1007 + 1006 +1004)\times 40\times 0.3 = 60,684$$
+
+next 3 steps:
+
+$$40 \times 3 = 120$$
+
+subtotal:
+
+$$60,684 + 120 = 60,804$$
+
+second layer:
+(according to the previous estimation)
+
+Since 4090 is for 20 nets, for only 5 nets, it would be 1022.5 
+
+$$1022.5\times 4 = 4090$$ 
+
+Two layers in total:
+
+$$60,804 + 4,090 = 64,894$$
+
+This gives the operations per second:
+
+$$64,894 \div (334 \times 10^{-6}) = 1.94\times 10^{8} OP/s$$
+
+or 194 MOP/s
+
+energy efficiency with operation is:
+
+$$194 \div 111 = 1.75 MOP/(s \cdot mW)$$
+
+
 
