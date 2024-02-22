@@ -575,4 +575,195 @@ energy efficiency with operation is:
 $$194 \div 111 = 1.75 MOP/(s \cdot mW)$$
 
 
+Since the resource usage is really low, I could probably use a low-end FPGA for the samet test and compare to make sure my assumption can stand.
+
+
+
+
+## 22 Feb
+
+I will organise the project files for Vivado today and see what I have done.
+
+
+### Project kintex_bin_ratio_pwr
+
+Location: /home/sx4n18/FPGA_projects/bin_ratio_ensemble_pwr/artix_bin_ratio_pwr
+
+Product family: Artix-7
+
+Project part: xc7a100tcsg324-3
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.1
+
+Ensemble size: 20
+
+SAIF file: Present
+
+Power analysis: 517 + 94 mW
+
+Resource usage:
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 63400       |  59476  | 93.81072           |
+| LUTRAM      | 19000       | 715     | 3.7631578          |
+| FF          | 126800      | 8008    | 6.315457           |
+| BRAM        | 135         | 20      | 14.814815          |
+| IO          | 210         | 30      | 14.285715          |
+
+
+Comment:
+The tool will complain the synthesis is out of date, because input_value_mem.v was modified.
+
+I guess the modified part was the comment-off-ed part was released for a quick test.
+
+Suggest not to update the sysnthesis and implementation.
+
+
+### Project pwr_measure
+
+Location: /home/sx4n18/FPGA_projects/bin_ratio_ensemble_pwr/pwr_measure
+
+Product family: Virtex UltraScale
+
+Project part: Virtex-UltraScale VCU108 Evaluation Platform (xcvu095-ffva2104-2-e)
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.1
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis: 396 + 911 mW
+
+Resource usage:
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |  60291  | 11.214844          |
+| LUTRAM      | 76800       | 730     | 0.9505209          |
+| FF          | 1075200     | 8678    | 0.80710566         |
+| BRAM        | 1728        | 10      | 0.5787037         |
+
+
+
+
+### Project ensemble_spiking_net
+
+Location: /home/sx4n18/ensemble_spiking/Ensemble_SNN_HW/vivado_sim/ensemble_spiking_net
+
+Product family: Virtex UltraScale
+
+Project part: Virtex-UltraScale VCU108 Evaluation Platform (xcvu095-ffva2104-2-e)
+
+Purpose of the project: Design validation
+
+Top module: top_ensemble_testing
+
+Ensemble design version: v0.1
+
+Ensemble size: 20
+
+SAIF file: absent
+
+Power analysis: 480 + 912 mW (medium confidence estimation)
+
+Resource usage:
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |  61134  | 11.371652          |
+| LUTRAM      | 76800       | 1066    | 1.3880208          |
+| FF          | 1075200     | 8868    | 0.82477677         |
+| BRAM        | 1728        | 10      | 0.5787037         |
+| IO          | 832         | 10      | 1.2019231         |
+| MMCM        | 16          | 1      | 6.25         |
+| BUFG        | 960         | 1      | 0.10416667         |
+
+
+Comment:
+
+From the look of the project, the accuracy must have been validated with the FPGA implementation.
+
+Hardware implementation should be consistent with the software simulation.
+
+It also complains the out-of-date synthesis, it is due to the same modification made on input_value_mem.v
+
+
+### Project ensemble_SNN_update
+
+Location: /home/sx4n18/ensemble_spiking/Ensemble_SNN_updated/vivado_sim/ensemble_SNN_update
+
+Product family: Virtex UltraScale
+
+Project part: Virtex-UltraScale VCU108 Evaluation Platform (xcvu095-ffva2104-2-e)
+
+Purpose of the project: Power measurement
+
+Top module: Trimmed_bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 5
+
+SAIF file: present (Trimmed_switch.saif and updated_switch.saif)
+
+Power analysis: 75 + 907 mW 
+
+Resource usage:
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |  15337  | 2.8528645          |
+| LUTRAM      | 76800       | 260    | 0.33854166          |
+| FF          | 1075200     | 2543    | 0.23651414         |
+| BRAM        | 1728        | 2.5      | 0.14467593         |
+
+
+Comment:
+
+Think this is my newest project with the trimmed ensemble and power measurement.
+
+There are two SAIF files because one is for the trimmed ensemble, one is for the whole ensemble.
+
+The implementation in this project is in agreement with the trimmed version.
+
+
+### Project kintex_pwr_measure
+
+Location: /home/sx4n18/FPGA_projects/bin_ratio_ensemble_pwr_kintex/kintex_pwr_measure
+
+Product family: Kintex UltraScale
+
+Project part: xcku025-ffva1156-1-c
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.1
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis: 388 + 481 mW 
+
+Resource usage:
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 145440      |  60289  | 41.452835          |
+| LUTRAM      | 67680       | 730    | 1.0786052          |
+| FF          | 290880     | 8678    | 2.983361         |
+| BRAM        | 360        | 10      | 2.777778         |
+
 
