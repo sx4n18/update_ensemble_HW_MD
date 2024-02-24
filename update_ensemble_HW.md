@@ -579,7 +579,6 @@ Since the resource usage is really low, I could probably use a low-end FPGA for 
 
 
 
-
 ## 22 Feb
 
 I will organise the project files for Vivado today and see what I have done.
@@ -765,5 +764,56 @@ Resource usage:
 | LUTRAM      | 67680       | 730    | 1.0786052          |
 | FF          | 290880     | 8678    | 2.983361         |
 | BRAM        | 360        | 10      | 2.777778         |
+
+
+
+## 23 Feb
+
+Just realised that I have conducted an exhaustive search on full precision prediction ensemble instead of the quantised ensemble.
+
+Now I have saved the quantised ensemble prediction and did the exhaustive search again, it is giving me different combo for an even higher accuracy this time.
+
+![Exhaustive search showing a different combo with better performance](./img/A_different_combo_giving_even_higher_acc.png)
+
+```text
+The best accuracy is  0.9681481481481482
+The best index is  13948
+The best combination is  (6, 9, 11, 17, 18)
+```
+
+Contrary to the previous index, the combo of (6,9,11,17,18) is giving 96.81\% instead of 96.74\%.
+
+I shall update the hardware again after.
+
+Now I should have a confusion matrix for 8-bit implementation.
+
+This has been generated and included in my thesis.
+
+
+On the side note, I should also probably consider carrying out the exhaustive search on the combination of ensemble SNN for the final accuracy.
+
+So far the target range starts from 1 to 10.
+
+The thorough exhaustive search for this range has been finished:
+
+![The exhaustive search errorbar figure](./img/all_combo_BESNN_accuracy_and_error_bar.pdf)
+
+
+## 24 Feb
+
+Should I also run exhaustive search for range from 11 to 20?
+
+I mean, I could...
+
+But I really need to save the accuracy along the ensemble size.
+
+Ok, now I have run all the exhaustive search for size from 1 to 20.
+
+Box plot is here:
+
+![Error bar plot of accuracy along ensemble size](./img/all_combo_BESNN_accuracy_and_box_plot.pdf)
+
+
+### OK, now I should switch to FPGA implementation run on Vivado and get some more data!
 
 
