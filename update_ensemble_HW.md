@@ -817,3 +817,264 @@ Box plot is here:
 ### OK, now I should switch to FPGA implementation run on Vivado and get some more data!
 
 
+About the power saving technique I found that I can probably turn the power_opt_design on to do either pre-synth power optimisation or post-imp optimisation but not both.
+
+This is basically achieved by clock gating and power gating.
+
+Clock gating basically will include some extra LUT to disable clock when unnecessary.
+
+Power gating can blockout the unsued BRAM so that it will not consume more power.
+
+
+Now I should rerun some design implementation and turn this on to see how it does.
+
+
+### Project Virtex_ultrascale_VCU108 (not set for OOC)
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/VCU108/Virtex_ultrascale_VCU108
+
+Product family: Virtex UltraScale
+
+Project part: Virtex-UltraScale VCU108 Evaluation Platform (xcvu095-ffva2104-2-e)
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis: 322 + 910 mW 
+
+Resource usage: 
+
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |   62086 |    11.548736       |
+| LUTRAM      | 76800       |    1050 |      1.3671875     |
+| FF          | 1075200     |  9841   |     0.9152716     |
+| BRAM        | 1728        |   10    |     0.5787037     |
+| IO          | 832         | 30      |     3.6057692     |
+| BUFG        | 960         | 1       | 0.10416667        |
+
+Comment:
+
+This is the first attempt for using power_opt_design for introducing clock enable or power gating.
+
+But not sure if it is because I did not turn on out of context synthesis or anything, the power is not saved but even higher than the old one that does not have clock enable.
+
+Probably it is the additional resouce usage that is taking more power, because this implementation has higher LUT use and additional IO and BUFG use.
+
+Will turn opwer opt design off for now.
+
+
+### Project Artix-7
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/artix_board_imp/Artix_7
+
+Product family: Artix-7 Low Voltage
+
+Project part: xc7a100tlcsg324-2L
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: failed
+
+Power analysis: 
+
+Resource usage: 
+
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 63400       |   66215 |    104.440056      |
+| LUTRAM      | 19000       |    4186 |      22.031578    |
+| FF          | 126800     |  9117   |     7.190063     |
+| BRAM        | 135        |   11    |     8.148148     |
+
+
+
+Comment:
+
+The purpose of this project is to try out the artix-7 lower voltage family to see if it actually saves power.
+
+But this implementation cannot be run because the LUT was over used by 4 \%.
+
+Not sure if it is because it is low voltage, so it needs more resource, I will now switch back to the board I have tried before for the next implementation.
+
+
+### Project Artix_7_higher_speed
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/artix_board_imp/Artix_7_higher_speed
+
+Product family: Artix-7
+
+Project part: xc7a100tcsg324-3
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis:  386 + 86 mW 
+
+Resource usage: 
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 63400       |   60392 |    95.255516      |
+| LUTRAM      | 19000       |    715 |      3.7631578    |
+| FF          | 126800     |  8837   |     6.9692426     |
+| BRAM        | 135        |   20    |     14.814815     |
+
+Comment:
+
+This is my second time using this board for implementation, last time it was my first version of hardware implementation, the dynamic power was up to 517 mW.
+
+This seems like a dramatic reduction for power.
+
+
+### Project Spartan_7
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/spartan_board
+
+Product family: Spartan-7
+
+Project part: xc7s100fgga484-2
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis:  393 + 92 mW 
+
+Resource usage: 
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 64000       |   60369 |    94.32656      |
+| LUTRAM      | 17600       |    715 |      4.0625    |
+| FF          | 128000     |  8837   |     6.9039063    |
+| BRAM        | 120        |   20    |     16.666668     |
+
+
+
+Comment:
+
+This is an attempt to use Spartan-7 as the target FPGA for the implementation.
+
+This shows that the power can be minimised to around this level.
+
+
+### Project smallest_virtex_ultrascale
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/AnotherVirtex_ultrascale
+
+Product familty: Virtex UltraScale
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+I failed, because apparently, you need a license for this board.
+
+
+### Project Kintex_ultrascale
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/kintex_ultrascale
+
+Product familty: Virtex UltraScale
+
+Project part: xcku025-ffva1156-1-c
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis:  298 + 480 mW 
+
+Resource usage: 
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 145440      |   61839 |    42.518566      |
+| LUTRAM      | 67680       |    1050 |      1.5514184    |
+| FF          | 290880     |  9841   |     3.383182    |
+| BRAM        | 360        |   10    |     2.777778    |
+
+
+Comment:
+
+Somehow this has an even smaller power consumption than Virtex? not sure why
+
+Also I forgot to turn on ooc synthesis for Project Virtex_ultrascale_VCU108, so I will run it again with the OOC turned on.
+
+
+### Project Virtex_ultrascale_VCU108 (OOC on)
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/VCU108/Virtex_ultrascale_VCU108
+
+Product family: Virtex UltraScale
+
+Project part: Virtex-UltraScale VCU108 Evaluation Platform (xcvu095-ffva2104-2-e)
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis: 308 + 910 mW 
+
+Resource usage: 
+
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |   61812 |    11.497768       |
+| LUTRAM      | 76800       |    1050 |      1.3671875     |
+| FF          | 1075200     |  9841   |     0.9152716     |
+| BRAM        | 1728        |   10    |     0.5787037     |
+
+
+Comment:
+
+Apparently OOC synthesis will not generate IO and BUFG, this power consumption is within my expectation, cus last time it was 305 mW.
+
+It can be seen that overall Kintex power consumption will be lower than Virtex.
+
+
+Now I should back up all these projects.
+
+
