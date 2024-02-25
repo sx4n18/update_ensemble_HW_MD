@@ -1078,3 +1078,39 @@ It can be seen that overall Kintex power consumption will be lower than Virtex.
 Now I should back up all these projects.
 
 
+
+## 25 Feb
+
+Think I should probably also implement Kintex-7 and Virtex-7 to see how different family compares.
+
+
+### Project Kintex-7
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/VCU108/Virtex_ultrascale_VCU108
+
+Product family: Kintex-7
+
+Project part: 
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis:  +  mW 
+
+Resource usage: 
+
+
+| Item        | Available   |  Used   |  Utilisation rate %|
+| ----------- | ----------- | --------| ----------------   |
+| LUT         | 537600      |   61812 |    11.497768       |
+| LUTRAM      | 76800       |    1050 |      1.3671875     |
+| FF          | 1075200     |  9841   |     0.9152716     |
+| BRAM        | 1728        |   10    |     0.5787037     |
+
