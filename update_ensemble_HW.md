@@ -1084,13 +1084,13 @@ Now I should back up all these projects.
 Think I should probably also implement Kintex-7 and Virtex-7 to see how different family compares.
 
 
-### Project Kintex-7
+### Project Kintex_7
 
-Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/VCU108/Virtex_ultrascale_VCU108
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/kintex_board
 
 Product family: Kintex-7
 
-Project part: 
+Project part: xc7k160tfbg484-3
 
 Purpose of the project: Power measurement
 
@@ -1102,15 +1102,49 @@ Ensemble size: 20
 
 SAIF file: present
 
-Power analysis:  +  mW 
+Power analysis: 389 + 113 mW 
 
 Resource usage: 
 
 
 | Item        | Available   |  Used   |  Utilisation rate %|
 | ----------- | ----------- | --------| ----------------   |
-| LUT         | 537600      |   61812 |    11.497768       |
-| LUTRAM      | 76800       |    1050 |      1.3671875     |
-| FF          | 1075200     |  9841   |     0.9152716     |
-| BRAM        | 1728        |   10    |     0.5787037     |
+| LUT         | 101400      |   60374 |    59.540432       |
+| LUTRAM      | 35000       |    715  |    2.0428572      |
+| FF          | 202800      |  8837   |     4.3574953     |
+| BRAM        | 325        |   20    |     6.1538463     |
+
+
+
+Comment:
+
+Because the smallest Kintex-7 board only has 41K LUT, our design cannot definitely fit into the kintex-7 board.
+
+Therefore, the board chosen for this project is the second smallest kintex-7 board.
+
+
+### Project Virtex_7
+
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_board
+
+Product family: Virtex-7
+
+Project part: xc7vx330tffg1157-3
+
+Purpose of the project: Power measurement
+
+Top module: Bin_ratio_ensemble_spiking_net
+
+Ensemble design version: v0.2
+
+Ensemble size: 20
+
+SAIF file: present
+
+Power analysis: failed
+
+Comment: 
+
+This device needs a license for access, power analysis cannot be finished.
+
 
