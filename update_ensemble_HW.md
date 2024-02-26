@@ -1154,15 +1154,15 @@ Now I will re-implement the ensemble of 5 design into the FPGA board of VCU108 a
 
 ### Project VCU108_trimmed_5
 
-Location: 
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/virtex_ultrascale/VCU108_ensemble_5/VCU108_trimmed_5
 
 Product family: Virtex Ultrascale
 
-Project part: 
+Project part: xcvu095-ffva2104-2-e
 
 Purpose of the project: Power measurement
 
-Top module: 
+Top module: Trimmed_bin_ratio_ensemble_spiking_net
 
 Ensemble design version: v0.2
 
@@ -1170,35 +1170,37 @@ Ensemble size: 5
 
 SAIF file: present
 
-Power analysis:  +  mW 
+Power analysis:  75 + 907 mW 
 
 Resource usage: 
 
 
 | Item        | Available   |  Used   |  Utilisation rate %|
 | ----------- | ----------- | --------| ----------------   |
-| LUT         | 537600      |    |           |
-| LUTRAM      | 76800       |     |           |
-| FF          | 1075200     |     |          |
-| BRAM        | 1728        |       |          |
-
+| LUT         | 537600      |   15308 |    2.84747         |
+| LUTRAM      | 76800       |   265   |     0.3450521      |
+| FF          | 1075200     |   2537  |     0.23595609     |
+| BRAM        | 1728        |     2.5 |     0.14467593     |
 
 Comment:
 
+Just as expected, it only costs 75 mW for dynamic power.
+
+Will now try to find the smallest Artix-7 board for another implementation.
 
 
 ### Project Artix_7_trimmed_5
 
 
-Location: 
+Location: /home/sx4n18/FPGA_projects/various_boards_imp/artix_board_imp/Artix_7_trimmed_5
 
 Product family: Artix-7
 
-Project part: 
+Project part: xc7a35tcpg236-3
 
 Purpose of the project: Power measurement
 
-Top module: 
+Top module: Trimmed_bin_ratio_ensemble_spiking_net
 
 Ensemble design version: v0.2
 
@@ -1206,15 +1208,18 @@ Ensemble size: 5
 
 SAIF file: present
 
-Power analysis:   +  mW 
+Power analysis:  98 + 69 mW 
 
 Resource usage: 
 
 | Item        | Available   |  Used   |  Utilisation rate %|
 | ----------- | ----------- | --------| ----------------   |
-| LUT         | 63400       |   60392 |    95.255516      |
-| LUTRAM      | 19000       |    715 |      3.7631578    |
-| FF          | 126800     |  8837   |     6.9692426     |
-| BRAM        | 135        |   20    |     14.814815     |
+| LUT         | 20800   |   14946 |    71.855774      |
+| LUTRAM      | 9600       |    182 |      1.8958334    |
+| FF          | 41600     |  2282   |     5.4855766     |
+| BRAM        | 50        |   5    |     10.0     |
 
 
+Comment:
+
+This might be the optimal solution to the ensemble of 5, with minimal power consumption and minimal resource utilisation.
